@@ -1,0 +1,3 @@
+/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles/encrypt.dir
+/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles/edit_cache.dir
+/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles/rebuild_cache.dir
