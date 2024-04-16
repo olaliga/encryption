@@ -1,169 +1,118 @@
 #include <iostream>
-#include <openssl/aes.h>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
-#include <openssl/bio.h>
-#include <openssl/buffer.h>
-#include <openssl/rand.h>
+#include <openssl/err.h>
+#include <openssl/sha.h>
 #include <cstring>
-#include <ctime>
-#include <stdexcept>
-#include <fstream>
 
-// 使用 PKCS7 进行 unpad 操作
-std::string pkcs7_unpad(const std::string& data) {
-    size_t pad_size = static_cast<size_t>(data.back());
-    if (pad_size > data.size()) {
-        throw std::runtime_error("Invalid padding");
-    }
-    return data.substr(0, data.size() - pad_size);
-}
+void handleErrors(void);
+bool verifyHMAC(const unsigned char *data, int data_len, const unsigned char *hmac, const unsigned char *key);
+bool checkTokenExpiry(unsigned char *data, int token_len, int ttl);
+int decryptToken(const unsigned char *token, int token_len, unsigned char *key, unsigned char *plaintext);
 
-// AES CBC 解密
-std::string aes_cbc_decrypt(const std::string& ciphertext, const std::string& key, const std::string& iv) {
-    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) {
-        throw std::runtime_error("Failed to create cipher context");
-    }
+int main (void)
+{
+    /* Hardcoded key and token */
+    unsigned char key[] = {
+        0x32, 0x55, 0x34, 0x34, 0x73, 0x64, 0x56, 0x30, 0x4e, 0x61, 0x48, 0x44, 0x32, 0x68, 0x51, 0x30,
+        0x6f, 0x46, 0x31, 0x33, 0x32, 0x48, 0x31, 0x46, 0x5f, 0x67, 0x54, 0x4f, 0x66, 0x35, 0x48, 0x4f
+    };
+    unsigned char token[] = {
+        0x67, 0x41, 0x41, 0x41, 0x41, 0x41, 0x42, 0x6d, 0x48, 0x53, 0x38, 0x72, 0x34, 0x6a, 0x4e, 0x38,
+        0x67, 0x4f, 0x37, 0x5f, 0x63, 0x72, 0x46, 0x65, 0x54, 0x55, 0x51, 0x50, 0x31, 0x45, 0x64, 0x6f,
+        0x70, 0x47, 0x56, 0x72, 0x78, 0x79, 0x35, 0x42, 0x79, 0x34, 0x37, 0x62, 0x30, 0x39, 0x61, 0x4c,
+        0x63, 0x6b, 0x7a, 0x69, 0x56, 0x31, 0x69, 0x63, 0x67, 0x5a, 0x2d, 0x53, 0x5a, 0x64, 0x43, 0x54,
+        0x76, 0x51, 0x57, 0x52, 0x4d, 0x2d, 0x76, 0x65, 0x54, 0x57, 0x68, 0x74, 0x34, 0x4c, 0x49, 0x62,
+        0x70, 0x49, 0x47, 0x37, 0x66, 0x71, 0x4d, 0x68, 0x33, 0x76, 0x30, 0x57, 0x6f, 0x5a, 0x30, 0x69,
+        0x4c, 0x34, 0x31, 0x32, 0x30, 0x6e, 0x6b, 0x56, 0x2d, 0x67, 0x51, 0x61, 0x56, 0x74, 0x72, 0x51,
+        0x68, 0x78, 0x66, 0x77, 0x4c, 0x6f, 0x61, 0x4d, 0x63, 0x6f, 0x45, 0x44, 0x4c, 0x68, 0x59, 0x71,
+        0x4f, 0x63, 0x73, 0x63, 0x42, 0x70, 0x50, 0x54, 0x41, 0x71, 0x35, 0x43
+    };
 
-    if (EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, reinterpret_cast<const unsigned char*>(key.c_str()), reinterpret_cast<const unsigned char*>(iv.c_str())) != 1) {
-        EVP_CIPHER_CTX_free(ctx);
-        throw std::runtime_error("Failed to initialize decryption");
-    }
+    /* Print key and token */
+    std::cout << "Key: ";
+    for (int i = 0; i < sizeof(key); ++i)
+        printf("%02x", key[i]);
+    std::cout << std::endl;
 
-    std::string plaintext;
-    int len;
-    int max_len = ciphertext.size() + AES_BLOCK_SIZE; // 额外空间用于填充
-    plaintext.resize(max_len);
+    std::cout << "Token: ";
+    for (int i = 0; i < sizeof(token); ++i)
+        printf("%02x", token[i]);
+    std::cout << std::endl;
 
-    if (EVP_DecryptUpdate(ctx, reinterpret_cast<unsigned char*>(&plaintext[0]), &len, reinterpret_cast<const unsigned char*>(ciphertext.c_str()), ciphertext.size()) != 1) {
-        EVP_CIPHER_CTX_free(ctx);
-        throw std::runtime_error("Decryption error");
-    }
-    int plaintext_len = len;
+    /* Buffer for the decrypted text */
+    unsigned char plaintext[128];
 
-    if (EVP_DecryptFinal_ex(ctx, reinterpret_cast<unsigned char*>(&plaintext[len]), &len) != 1) {
-        EVP_CIPHER_CTX_free(ctx);
-        throw std::runtime_error("Decryption finalization error");
-    }
-    plaintext_len += len;
+    /* Decrypt the token */
+    int plaintext_len = decryptToken(token, sizeof(token), key, plaintext);
 
-    EVP_CIPHER_CTX_free(ctx);
-    plaintext.resize(plaintext_len);
-    return plaintext;
-}
-
-// 解密函数
-std::string decrypt(const std::string& token_file, const std::string& key_file, int ttl = 0) {
-    // 读取密钥文件
-    std::ifstream key_ifs(key_file, std::ios::binary);
-    if (!key_ifs) {
-        throw std::runtime_error("Failed to open key file");
-    }
-    std::string base64_key((std::istreambuf_iterator<char>(key_ifs)), std::istreambuf_iterator<char>());
-    key_ifs.close();
-
-    // base64 解码密钥
-    BIO* b64 = BIO_new(BIO_f_base64());
-    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-    BIO* bio = BIO_new_mem_buf(base64_key.c_str(), -1);
-    bio = BIO_push(b64, bio);
-
-    char decoded_key[1024];
-    int decoded_len = BIO_read(bio, decoded_key, base64_key.size());
-    if (decoded_len <= 0) {
-        BIO_free_all(bio);
-        throw std::runtime_error("Failed to decode key");
-    }
-    decoded_key[decoded_len] = '\0';
-    BIO_free_all(bio);
-
-    std::string key(decoded_key, decoded_len);
-
-    // 读取 token 文件
-    std::ifstream token_ifs(token_file, std::ios::binary);
-    if (!token_ifs) {
-        throw std::runtime_error("Failed to open token file");
-    }
-    std::string base64_token((std::istreambuf_iterator<char>(token_ifs)), std::istreambuf_iterator<char>());
-    token_ifs.close();
-
-    // base64 解码 token
-    bio = BIO_new_mem_buf(base64_token.c_str(), -1);
-    bio = BIO_push(b64, bio);
-
-    char decoded_token[1024];
-    decoded_len = BIO_read(bio, decoded_token, base64_token.size());
-    if (decoded_len <= 0) {
-        BIO_free_all(bio);
-        throw std::runtime_error("Failed to decode token");
-    }
-    decoded_token[decoded_len] = '\0';
-    BIO_free_all(bio);
-
-    std::string token(decoded_token, decoded_len);
-
-    // 得到当前时间戳
-    std::time_t current_time = std::time(nullptr);
-
-    // 解析 token 中的数据
-    unsigned long long timestamp = 0; // 时间戳
-    std::string iv; // IV
-    std::string ciphertext; // 密文
-    std::string hmac; // HMAC
-
-    if (token.size() < 32) {
-        throw std::runtime_error("Invalid token");
-    }
-    // 解析数据
-    std::memcpy(&timestamp, &token[1], sizeof(timestamp));
-    iv = token.substr(9, 16);
-    ciphertext = token.substr(25, token.size() - 57);
-    hmac = token.substr(token.size() - 32);
-
-    // 判断密钥是否失效
-    if (ttl > 0) {
-        if (timestamp + ttl < current_time) {
-            throw std::runtime_error("Key expired");
-        }
-    }
-
-    // 计算 HMAC
-    HMAC_CTX* hmac_ctx = HMAC_CTX_new();
-    HMAC_Init_ex(hmac_ctx, key.c_str(), key.size(), EVP_sha256(), NULL);
-    HMAC_Update(hmac_ctx, reinterpret_cast<const unsigned char*>(token.c_str()), token.size() - 32);
-    unsigned char calculated_hmac[32];
-    unsigned int hmac_len;
-    HMAC_Final(hmac_ctx, calculated_hmac, &hmac_len);
-    HMAC_CTX_free(hmac_ctx);
-
-    // 验证 HMAC
-    if (std::memcmp(calculated_hmac, hmac.c_str(), 32) != 0) {
-        throw std::runtime_error("Invalid HMAC");
-    }
-
-    // AES CBC 解密
-    std::string plaintext = aes_cbc_decrypt(ciphertext, key.substr(16), iv);
-
-    // PKCS7 unpad
-    std::string unpadded_plaintext = pkcs7_unpad(plaintext);
-
-    return unpadded_plaintext;
-}
-
-int main() {
-    // 假设密钥和 token 文件已经定义好了
-    std::string key_file = "key.key";
-    std::string token_file = "cipher_text.dat";
-    int ttl = 3600; // 有效时间（秒）
-
-    try {
-        std::string decrypted_data = decrypt(token_file, key_file, ttl);
-        std::cout << "Decrypted data: " << decrypted_data << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
-    }
+    /* Debug: Print decrypted text */
+    std::cout << "Decrypted text: ";
+    for (int i = 0; i < plaintext_len; ++i)
+        std::cout << plaintext[i];
+    std::cout << std::endl;
 
     return 0;
+}
+
+void handleErrors(void)
+{
+    ERR_print_errors_fp(stderr);
+    abort();
+}
+
+bool verifyHMAC(const unsigned char *data, int data_len, const unsigned char *hmac, const unsigned char *key)
+{
+    unsigned char calculated_hmac[SHA256_DIGEST_LENGTH];
+    HMAC(EVP_sha256(), key, 16, data, data_len, calculated_hmac, NULL);
+    return (memcmp(calculated_hmac, hmac, SHA256_DIGEST_LENGTH) == 0);
+}
+
+bool checkTokenExpiry(unsigned char *data, int token_len, int ttl)
+{
+    time_t current_time = std::time(nullptr);
+    if (token_len < 9) // Check if token is at least 9 bytes long
+        return false;
+    std::chrono::seconds timestamp;
+    std::memcpy(&timestamp, data + 1, sizeof(timestamp));
+    time_t token_time = timestamp.count();
+    return (ttl == -1 || current_time <= token_time + ttl);
+}
+
+int decryptToken(const unsigned char *token, int token_len, unsigned char *key, unsigned char *plaintext)
+{
+    if (token_len < 41) // Check if token is at least 41 bytes long
+        return 0;
+
+    /* Extract IV and ciphertext from token */
+    unsigned char iv[16];
+    std::memcpy(iv, token + 9, sizeof(iv));
+    const unsigned char *ciphertext = token + 25;
+    int ciphertext_len = token_len - 41;
+
+    /* Create and initialise the context */
+    EVP_CIPHER_CTX *ctx;
+    if (!(ctx = EVP_CIPHER_CTX_new()))
+        handleErrors();
+
+    /* Initialise the decryption operation */
+    if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_128_cbc(), NULL, key + 16, iv))
+        handleErrors();
+
+    /* Provide the message to be decrypted, and obtain the plaintext output */
+    int plaintext_len;
+    int len;
+    if (1 != EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len))
+        handleErrors();
+    plaintext_len = len;
+
+    /* Finalise the decryption */
+    if (1 != EVP_DecryptFinal_ex(ctx, plaintext + len, &len))
+        handleErrors();
+    plaintext_len += len;
+
+    /* Clean up */
+    EVP_CIPHER_CTX_free(ctx);
+
+    return plaintext_len;
 }
