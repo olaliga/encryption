@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /Users/huangshijie/Desktop/test_encrypt_master/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/encrypt.dir/all
+all: CMakeFiles/example_encrypt.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/encrypt.dir/clean
+clean: CMakeFiles/example_encrypt.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/encrypt.dir
+# Target rules for target CMakeFiles/example_encrypt.dir
 
 # All Build rule for target.
-CMakeFiles/encrypt.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles --progress-num=1,2 "Built target encrypt"
-.PHONY : CMakeFiles/encrypt.dir/all
+CMakeFiles/example_encrypt.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles --progress-num=1,2 "Built target example_encrypt"
+.PHONY : CMakeFiles/example_encrypt.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/encrypt.dir/rule: cmake_check_build_system
+CMakeFiles/example_encrypt.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/encrypt.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/example_encrypt.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles 0
-.PHONY : CMakeFiles/encrypt.dir/rule
+.PHONY : CMakeFiles/example_encrypt.dir/rule
 
 # Convenience name for target.
-encrypt: CMakeFiles/encrypt.dir/rule
-.PHONY : encrypt
+example_encrypt: CMakeFiles/example_encrypt.dir/rule
+.PHONY : example_encrypt
 
 # clean rule for target.
-CMakeFiles/encrypt.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/clean
-.PHONY : CMakeFiles/encrypt.dir/clean
+CMakeFiles/example_encrypt.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/clean
+.PHONY : CMakeFiles/example_encrypt.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

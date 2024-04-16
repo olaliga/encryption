@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/example.dir/example.cpp.o -o example  /usr/local/Cellar/openssl@3/3.2.1/lib/libssl.dylib /usr/local/Cellar/openssl@3/3.2.1/lib/libcrypto.dylib

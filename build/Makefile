@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named encrypt
+# Target rules for targets named example_encrypt
 
 # Build rule for target.
-encrypt: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 encrypt
-.PHONY : encrypt
+example_encrypt: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example_encrypt
+.PHONY : example_encrypt
 
 # fast build rule for target.
-encrypt/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/build
-.PHONY : encrypt/fast
+example_encrypt/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/build
+.PHONY : example_encrypt/fast
 
-encrypt.o: encrypt.cpp.o
-.PHONY : encrypt.o
+example_encrypt.o: example_encrypt.cpp.o
+.PHONY : example_encrypt.o
 
 # target to build an object file
-encrypt.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/encrypt.cpp.o
-.PHONY : encrypt.cpp.o
+example_encrypt.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/example_encrypt.cpp.o
+.PHONY : example_encrypt.cpp.o
 
-encrypt.i: encrypt.cpp.i
-.PHONY : encrypt.i
+example_encrypt.i: example_encrypt.cpp.i
+.PHONY : example_encrypt.i
 
 # target to preprocess a source file
-encrypt.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/encrypt.cpp.i
-.PHONY : encrypt.cpp.i
+example_encrypt.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/example_encrypt.cpp.i
+.PHONY : example_encrypt.cpp.i
 
-encrypt.s: encrypt.cpp.s
-.PHONY : encrypt.s
+example_encrypt.s: example_encrypt.cpp.s
+.PHONY : example_encrypt.s
 
 # target to generate assembly for a file
-encrypt.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/encrypt.dir/build.make CMakeFiles/encrypt.dir/encrypt.cpp.s
-.PHONY : encrypt.cpp.s
+example_encrypt.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_encrypt.dir/build.make CMakeFiles/example_encrypt.dir/example_encrypt.cpp.s
+.PHONY : example_encrypt.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... encrypt"
-	@echo "... encrypt.o"
-	@echo "... encrypt.i"
-	@echo "... encrypt.s"
+	@echo "... example_encrypt"
+	@echo "... example_encrypt.o"
+	@echo "... example_encrypt.i"
+	@echo "... example_encrypt.s"
 .PHONY : help
 
 
