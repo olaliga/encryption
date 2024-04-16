@@ -10,10 +10,10 @@ find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
 # 將所有源文件添加到變數 SRC_FILES
-file(GLOB SRC_FILES "encrypt.cpp")
+file(GLOB SRC_FILES "example_decrypt_2.cpp")
 
 # 添加執行檔
-add_executable(encrypt ${SRC_FILES})
+add_executable(example_decrypt_2 ${SRC_FILES})
 
 # 链接 OpenSSL 库
-target_link_libraries(encrypt ${OPENSSL_LIBRARIES})
+target_link_libraries(example_decrypt_2 ${OPENSSL_LIBRARIES})
