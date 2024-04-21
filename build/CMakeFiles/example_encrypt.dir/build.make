@@ -94,6 +94,11 @@ example_encrypt: CMakeFiles/example_encrypt.dir/example_encrypt.cpp.o
 example_encrypt: CMakeFiles/example_encrypt.dir/build.make
 example_encrypt: /usr/local/Cellar/openssl@3/3.2.1/lib/libssl.dylib
 example_encrypt: /usr/local/Cellar/openssl@3/3.2.1/lib/libcrypto.dylib
+example_encrypt: /Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libc10.dylib
+example_encrypt: /Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libkineto.a
+example_encrypt: /Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libtorch.dylib
+example_encrypt: /Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libtorch_cpu.dylib
+example_encrypt: /Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libc10.dylib
 example_encrypt: CMakeFiles/example_encrypt.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/huangshijie/Desktop/test_encrypt_master/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable example_encrypt"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/example_encrypt.dir/link.txt --verbose=$(VERBOSE)

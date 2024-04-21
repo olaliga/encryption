@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named example_decrypt_2
+# Target rules for targets named example_decrypt_torch
 
 # Build rule for target.
-example_decrypt_2: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example_decrypt_2
-.PHONY : example_decrypt_2
+example_decrypt_torch: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 example_decrypt_torch
+.PHONY : example_decrypt_torch
 
 # fast build rule for target.
-example_decrypt_2/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_2.dir/build.make CMakeFiles/example_decrypt_2.dir/build
-.PHONY : example_decrypt_2/fast
+example_decrypt_torch/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_torch.dir/build.make CMakeFiles/example_decrypt_torch.dir/build
+.PHONY : example_decrypt_torch/fast
 
-example_decrypt_2.o: example_decrypt_2.cpp.o
-.PHONY : example_decrypt_2.o
+example_decrypt_torch.o: example_decrypt_torch.cpp.o
+.PHONY : example_decrypt_torch.o
 
 # target to build an object file
-example_decrypt_2.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_2.dir/build.make CMakeFiles/example_decrypt_2.dir/example_decrypt_2.cpp.o
-.PHONY : example_decrypt_2.cpp.o
+example_decrypt_torch.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_torch.dir/build.make CMakeFiles/example_decrypt_torch.dir/example_decrypt_torch.cpp.o
+.PHONY : example_decrypt_torch.cpp.o
 
-example_decrypt_2.i: example_decrypt_2.cpp.i
-.PHONY : example_decrypt_2.i
+example_decrypt_torch.i: example_decrypt_torch.cpp.i
+.PHONY : example_decrypt_torch.i
 
 # target to preprocess a source file
-example_decrypt_2.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_2.dir/build.make CMakeFiles/example_decrypt_2.dir/example_decrypt_2.cpp.i
-.PHONY : example_decrypt_2.cpp.i
+example_decrypt_torch.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_torch.dir/build.make CMakeFiles/example_decrypt_torch.dir/example_decrypt_torch.cpp.i
+.PHONY : example_decrypt_torch.cpp.i
 
-example_decrypt_2.s: example_decrypt_2.cpp.s
-.PHONY : example_decrypt_2.s
+example_decrypt_torch.s: example_decrypt_torch.cpp.s
+.PHONY : example_decrypt_torch.s
 
 # target to generate assembly for a file
-example_decrypt_2.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_2.dir/build.make CMakeFiles/example_decrypt_2.dir/example_decrypt_2.cpp.s
-.PHONY : example_decrypt_2.cpp.s
+example_decrypt_torch.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/example_decrypt_torch.dir/build.make CMakeFiles/example_decrypt_torch.dir/example_decrypt_torch.cpp.s
+.PHONY : example_decrypt_torch.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... example_decrypt_2"
-	@echo "... example_decrypt_2.o"
-	@echo "... example_decrypt_2.i"
-	@echo "... example_decrypt_2.s"
+	@echo "... example_decrypt_torch"
+	@echo "... example_decrypt_torch.o"
+	@echo "... example_decrypt_torch.i"
+	@echo "... example_decrypt_torch.s"
 .PHONY : help
 
 

@@ -213,6 +213,15 @@ CMAKE_TAPI:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/tapi
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//The directory containing a CMake configuration file for Caffe2.
+Caffe2_DIR:PATH=/Users/huangshijie/Desktop/test_libtorch/libtorch/share/cmake/Caffe2
+
+//The directory containing a CMake configuration file for MKLDNN.
+MKLDNN_DIR:PATH=MKLDNN_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for MKL.
+MKL_DIR:PATH=MKL_DIR-NOTFOUND
+
 //Path to a library.
 OPENSSL_CRYPTO_LIBRARY:FILEPATH=/usr/local/Cellar/openssl@3/3.2.1/lib/libcrypto.dylib
 
@@ -228,6 +237,15 @@ PKG_CONFIG_ARGN:STRING=
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/local/bin/pkg-config
 
+//Path to a library.
+TORCH_LIBRARY:FILEPATH=/Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libtorch.dylib
+
+//The directory containing a CMake configuration file for Torch.
+Torch_DIR:PATH=/Users/huangshijie/Desktop/test_libtorch/libtorch/share/cmake/Torch
+
+//Path to a library.
+c10_LIBRARY:FILEPATH=/Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libc10.dylib
+
 //Value Computed by CMake
 decrypt_BINARY_DIR:STATIC=/Users/huangshijie/Desktop/test_encrypt_master/build
 
@@ -236,6 +254,9 @@ decrypt_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 decrypt_SOURCE_DIR:STATIC=/Users/huangshijie/Desktop/test_encrypt_master
+
+//Path to a library.
+kineto_LIBRARY:FILEPATH=/Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libkineto.a
 
 //Path to a library.
 pkgcfg_lib__OPENSSL_crypto:FILEPATH=/usr/local/Cellar/openssl@3/3.2.1/lib/libcrypto.dylib
@@ -389,6 +410,8 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenSSL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[/usr/local/Cellar/openssl@3/3.2.1/lib/libcrypto.dylib][/usr/local/Cellar/openssl@3/3.2.1/include][c ][v3.2.1()]
+//Details about finding Torch
+FIND_PACKAGE_MESSAGE_DETAILS_Torch:INTERNAL=[/Users/huangshijie/Desktop/test_libtorch/libtorch/lib/libtorch.dylib][/Users/huangshijie/Desktop/test_libtorch/libtorch/include;/Users/huangshijie/Desktop/test_libtorch/libtorch/include/torch/csrc/api/include][v()]
 //ADVANCED property for variable: OPENSSL_CRYPTO_LIBRARY
 OPENSSL_CRYPTO_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENSSL_INCLUDE_DIR
